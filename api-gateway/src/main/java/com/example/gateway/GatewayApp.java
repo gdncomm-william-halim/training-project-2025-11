@@ -2,10 +2,10 @@ package com.example.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+//import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableFeignClients
+//@EnableFeignClients
 @SpringBootApplication
 @EnableJpaRepositories
 public class GatewayApp {
