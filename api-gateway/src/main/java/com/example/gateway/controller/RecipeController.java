@@ -3,7 +3,7 @@ package com.example.gateway.controller;
 
 import com.example.gateway.api.ApiResponse;
 import com.example.gateway.model.Recipe;
-import com.example.gateway.service.RecipeService;
+import com.example.gateway.service.GatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +19,18 @@ import java.util.List;
 @RestController
 public class RecipeController {
 @Autowired
-private RecipeService recipeService;
+private GatewayService gatewayService;
 
   @RequestMapping(path = "/recipes", method = RequestMethod.GET)
   public List<Recipe> getRecipes(@RequestParam(required = false, defaultValue = "1") int size,
       @RequestParam(required = false, defaultValue = "2") int page) {
-    return recipeService.getRecipes(size, page);
+    return gatewayService.getRecipes(size, page);
   }
 
 
   @RequestMapping(path = "/recipe/{uniqueValue}", method = RequestMethod.GET)
   public ResponseEntity<ApiResponse<Recipe>> getRecipeByUniqueValue(@PathVariable String uniqueValue) {
-    Recipe find= recipeService.getRecipeByUniqueValu(uniqueValue);
+    Recipe find= gatewayService.getRecipeByUniqueValu(uniqueValue);
     ApiResponse<Recipe> body = ApiResponse.ok("Recipe fetched", find);
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -42,7 +42,7 @@ private RecipeService recipeService;
     // Implementation for adding a new recipe
 //    recipeService.addRecipes(recipe);
 
-    Recipe saved = recipeService.addRecipes(recipe);
+    Recipe saved = gatewayService.addRecipes(recipe);
     ApiResponse<Recipe> body = ApiResponse.ok("Recipe created", saved);
 
     return ResponseEntity
