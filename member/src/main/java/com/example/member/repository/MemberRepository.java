@@ -9,7 +9,8 @@ import java.util.List;
 
 
 public interface MemberRepository extends JpaRepository<Member, String> {
-//@Query("SELECT r FROM Recipe r Where r.uniqueValue = ?1")
+  List<Member> getMemberByEmail(String email);
+  //@Query("SELECT r FROM Recipe r Where r.uniqueValue = ?1")
 //List<Recipe> findByUniqueValue(String uniqueValue);
 
 }

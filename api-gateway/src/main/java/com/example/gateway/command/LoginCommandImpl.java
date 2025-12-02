@@ -1,10 +1,23 @@
 package com.example.gateway.command;
 
+import com.example.gateway.command.model.LoginCommandRequest;
+import com.example.gateway.command.model.LoginCommandResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.common.security.auth.Login;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Service
-public class LoginCommandImpl  extends LoginCommand {
+public class LoginCommandImpl  implements LoginCommand {
+
+  private final StringRedisTemplate stringRedisTemplate;
+
+  @Override
+  public LoginCommandResponse execute(LoginCommandRequest request) {
+
+    return null;
+
+  }
+
+
 }

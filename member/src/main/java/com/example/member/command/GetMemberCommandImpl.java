@@ -19,17 +19,18 @@ public class GetMemberCommandImpl implements GetMemberCommand {
   @Override
   public GetMemberCommandResponse execute(GetMemberCommandRequest request) {
 
-    final var member = Member.builder()
-        .email(request.getEmail())
-        .build();
+    final var member = memberRepository.getMemberByEmail(request.getEmail());
 
-    final var savedMember = memberRepository.save(member);
+    if (member.getFirst().getEmail().equals(request.getEmail()) && member.getFirst()
+        .getPassword()
+        .equals(request.getPassword())) {
+      return GetMemberCommandResponse.builder().email(member.getFirst().getEmail()).build();
+    } else {
 
-    return GetMemberCommandResponse.builder()
-        .password(savedMember.getPassword())
-        .name(savedMember.getName())
-        .email(savedMember.getEmail())
-        .build();
+      return GetMemberCommandResponse.builder().email("error").name("error").build();
+    }
+
+
   }
 
 }

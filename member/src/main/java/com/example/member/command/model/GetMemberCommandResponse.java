@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GetMemberCommandResponse {
   private String name;
-  private String password;
   private String email;
 }
