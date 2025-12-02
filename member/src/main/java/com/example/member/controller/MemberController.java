@@ -6,6 +6,7 @@ import com.example.member.command.CreateMemberCommand;
 import com.example.member.command.GetMemberCommand;
 import com.example.member.command.model.CreateMemberCommandRequest;
 import com.example.member.command.model.GetMemberCommandRequest;
+import com.example.member.controller.model.GetMemberRequest;
 import com.example.member.controller.model.MemberRequest;
 import com.example.member.controller.model.MemberResponse;
 import com.example.member.repository.MemberRepository;
@@ -47,9 +48,9 @@ public class MemberController {
 
 
   @GetMapping
-  public MemberResponse get(@RequestParam MemberRequest memberRequest) {
-    var commandRequest =
-        GetMemberCommandRequest.builder().email(memberRequest.getEmail()).password(memberRequest.getPassword()).build();
+  public MemberResponse get(@RequestParam("email") String email,
+      @RequestParam("password") String password) {
+    var commandRequest = GetMemberCommandRequest.builder().email(email).password(password).build();
 
     var commandResponse = commandExecutor.execute(GetMemberCommand.class, commandRequest);
 
@@ -58,7 +59,7 @@ public class MemberController {
 
 
   //  @RequestMapping(path = "/recipes", method = RequestMethod.GET)
-  //  public List<Recipe> getRecipes(@RequestParam(required = false, defaultValue = "1") int size,
+  //  public List<Recipe> getRecpes(@RequestParam(required = false, defaultValue = "1") int size,
   //      @RequestParam(required = false, defaultValue = "2") int page) {
   //    return recipeService.getRecipes(size, page);
   //  }

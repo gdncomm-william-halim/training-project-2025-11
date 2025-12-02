@@ -24,7 +24,7 @@ public class GetMemberCommandImpl implements GetMemberCommand {
     if (member.getFirst().getEmail().equals(request.getEmail()) && member.getFirst()
         .getPassword()
         .equals(request.getPassword())) {
-      return GetMemberCommandResponse.builder().email(member.getFirst().getEmail()).build();
+      return GetMemberCommandResponse.builder().name(member.getFirst().getName()).email(member.getFirst().getEmail()).build();
     } else {
 
       return GetMemberCommandResponse.builder().email("error").name("error").build();
