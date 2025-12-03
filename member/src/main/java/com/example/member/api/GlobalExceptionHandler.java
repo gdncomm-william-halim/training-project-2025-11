@@ -15,11 +15,9 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 
-  // fallback for any unhandled exception
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiResponse<Object>> handleException(Exception ex) {
     ApiResponse<Object> body = ApiResponse.error("Internal server error");
-    // optionally log ex here
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
 }

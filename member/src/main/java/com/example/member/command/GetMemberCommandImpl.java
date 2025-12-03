@@ -21,10 +21,8 @@ public class GetMemberCommandImpl implements GetMemberCommand {
 
     final var member = memberRepository.getMemberByEmail(request.getEmail());
 
-    if (member.getFirst().getEmail().equals(request.getEmail()) && member.getFirst()
-        .getPassword()
-        .equals(request.getPassword())) {
-      return GetMemberCommandResponse.builder().name(member.getFirst().getName()).email(member.getFirst().getEmail()).build();
+    if (member.getFirst().getEmail().equals(request.getEmail()) ) {
+      return GetMemberCommandResponse.builder().password(member.getFirst().getPassword()).name(member.getFirst().getName()).email(member.getFirst().getEmail()).build();
     } else {
 
       return GetMemberCommandResponse.builder().email("error").name("error").build();

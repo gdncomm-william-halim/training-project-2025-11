@@ -8,18 +8,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  // your custom business error (like "Recipe already exists")
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ApiResponse<Object>> handleIllegalArgument(IllegalArgumentException ex) {
     ApiResponse<Object> body = ApiResponse.error(ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 
-  // fallback for any unhandled exception
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiResponse<Object>> handleException(Exception ex) {
     ApiResponse<Object> body = ApiResponse.error("Internal server error");
-    // optionally log ex here
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
 }

@@ -1,16 +1,16 @@
-package com.example.member.command.model;
+package com.example.gateway.integration.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Builder
-public class GetMemberCommandResponse {
-  private String name;
+@NoArgsConstructor
+@AllArgsConstructor
+public class MemberAuthResponse {
+  private String id;
   private String email;
   private String password;
 }

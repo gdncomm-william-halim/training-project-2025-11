@@ -1,6 +1,5 @@
-package com.example.gateway.model;
+package com.example.gateway.command.model;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class LoginRequest {
-
-  @NotEmpty
+public class GetMemberCommandRequest {
   private String email;
-    private String password;
 }

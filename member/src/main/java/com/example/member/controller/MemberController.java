@@ -7,6 +7,7 @@ import com.example.member.command.GetMemberCommand;
 import com.example.member.command.model.CreateMemberCommandRequest;
 import com.example.member.command.model.GetMemberCommandRequest;
 import com.example.member.controller.model.GetMemberRequest;
+import com.example.member.controller.model.GetMemberResponse;
 import com.example.member.controller.model.MemberRequest;
 import com.example.member.controller.model.MemberResponse;
 import com.example.member.repository.MemberRepository;
@@ -32,14 +33,11 @@ public class MemberController {
   @PostMapping
   public MemberResponse create(@RequestBody MemberRequest webRequest) {
 
-    // 1. Convert Public JSON -> Internal Command Request
     var commandRequest = CreateMemberCommandRequest.builder()
         .name(webRequest.getName()).email(webRequest.getEmail()).password(webRequest.getPassword()).build();
 
-    // 2. Execute the Logic (The Worker)
     var commandResponse = commandExecutor.execute(CreateMemberCommand.class, commandRequest);
 
-    // 3. Convert Internal Result -> Public JSON Response
     return MemberResponse.builder()
         .name(commandResponse.getName())
         .email(webRequest.getEmail()) // We take email from the original request
@@ -47,14 +45,13 @@ public class MemberController {
   }
 
 
-  @GetMapping
-  public MemberResponse get(@RequestParam("email") String email,
-      @RequestParam("password") String password) {
-    var commandRequest = GetMemberCommandRequest.builder().email(email).password(password).build();
+  @PostMapping("/getmember")
+  public GetMemberResponse post(@RequestBody GetMemberRequest webRequest) {
+    var commandRequest = GetMemberCommandRequest.builder().email(webRequest.getEmail()).build();
 
     var commandResponse = commandExecutor.execute(GetMemberCommand.class, commandRequest);
 
-    return MemberResponse.builder().name(commandResponse.getName()).email(commandResponse.getEmail()).build();
+    return GetMemberResponse.builder().password(commandResponse.getPassword()).name(commandResponse.getName()).email(commandResponse.getEmail()).build();
   }
 
 

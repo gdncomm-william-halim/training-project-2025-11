@@ -14,5 +14,5 @@ public class GetMemberRequest {
 
   @NotEmpty
   private String email;
-    private String password;
+//    private String password;
 }
