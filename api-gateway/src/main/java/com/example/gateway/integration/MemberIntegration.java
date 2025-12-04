@@ -1,7 +1,8 @@
 package com.example.gateway.integration;
 
 import com.example.gateway.integration.model.MemberAuthResponse;
+import reactor.core.publisher.Mono;
 
 public interface MemberIntegration {
-  MemberAuthResponse findByEmail(String email);
+ Mono <MemberAuthResponse> findByEmail(String email);
 }

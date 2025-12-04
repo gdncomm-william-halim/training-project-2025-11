@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,22 +25,37 @@ public class LoginCommandImpl  implements LoginCommand {
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
   private final RedisTemplate<Object, Object> redisTemplate;
 
+//  @Override
+//  public LoginCommandResponse execute(LoginCommandRequest request) {
+//
+//    MemberAuthResponse memberData = memberIntegration.findByEmail(request.getEmail());
+//    if (memberData == null) throw new RuntimeException("User not found");
+//
+//    if (!passwordEncoder.matches(request.getPassword(), memberData.getPassword())) {
+//      throw new RuntimeException("Invalid Password");
+//    }
+//
+//    String token = jwtService.generateToken(memberData.getId(), memberData.getEmail());
+//    redisTemplate.opsForValue().set("active_session:" + memberData.getId(), token, 1, TimeUnit.HOURS
+//    );
+//    return LoginCommandResponse.builder().accessToken(token).build();
+//
+//  }
+
+
   @Override
-  public LoginCommandResponse execute(LoginCommandRequest request) {
+  public Mono<LoginCommandResponse> execute(LoginCommandRequest request) {
 
-    MemberAuthResponse memberData = memberIntegration.findByEmail(request.getEmail());
-    if (memberData == null) throw new RuntimeException("User not found");
+    return memberIntegration.findByEmail(request.getEmail())
+        .switchIfEmpty(Mono.error(new RuntimeException("User not found")))
+        .map(memberData -> {
+          if (!passwordEncoder.matches(request.getPassword(), memberData.getPassword())) {
+            throw new RuntimeException("Invalid Password");
+          }
 
-    if (!passwordEncoder.matches(request.getPassword(), memberData.getPassword())) {
-      throw new RuntimeException("Invalid Password");
-    }
-
-    String token = jwtService.generateToken(memberData.getId(), memberData.getEmail());
-    redisTemplate.opsForValue().set("active_session:" + memberData.getId(), token, 1, TimeUnit.HOURS
-    );
-    return LoginCommandResponse.builder().accessToken(token).build();
-
+          String token = jwtService.generateToken(memberData.getId(), memberData.getEmail());
+          return LoginCommandResponse.builder().accessToken(token).build();
+        });
   }
-
 
 }

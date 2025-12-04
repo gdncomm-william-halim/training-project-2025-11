@@ -15,27 +15,43 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class LoginController {
 
+  private final LoginCommand loginCommand;
 
   private final CommandExecutor commandExecutor;
 
   private final LogoutCommand logoutCommand;
 
   @PostMapping("/login")
-  public LoginResponse login(@RequestBody LoginRequest webRequest) {
+  public Mono<LoginResponse> login(@RequestBody LoginRequest webRequest) {
+
     var commandRequest = LoginCommandRequest.builder()
         .email(webRequest.getEmail())
         .password(webRequest.getPassword())
         .build();
 
-    var commandResponse = commandExecutor.execute(LoginCommand.class, commandRequest);
-    return LoginResponse.builder().accessToken(commandResponse.getAccessToken()).build();
+    return loginCommand.execute(commandRequest)
+        .map(response -> LoginResponse.builder()
+            .accessToken(response.getAccessToken())
+            .build());
   }
+
+//  @PostMapping("/login")
+//  public LoginResponse login(@RequestBody LoginRequest webRequest) {
+//    var commandRequest = LoginCommandRequest.builder()
+//        .email(webRequest.getEmail())
+//        .password(webRequest.getPassword())
+//        .build();
+//
+//    var commandResponse = commandExecutor.execute(LoginCommand.class, commandRequest);
+//    return LoginResponse.builder().accessToken(commandResponse.getAccessToken()).build();
+//  }
 
   @PostMapping("/logout")
   public void logout(@RequestHeader("Authorization") String token) {
