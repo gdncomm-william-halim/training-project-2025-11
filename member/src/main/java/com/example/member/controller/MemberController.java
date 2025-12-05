@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,10 @@ public class MemberController {
         .build();
   }
 
+  @GetMapping("/debug-auth")
+  public String debugAuth(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+    return "Authorization header seen by member-service: " + authHeader;
+  }
 
   @PostMapping("/getmember")
   public GetMemberResponse post(@RequestBody GetMemberRequest webRequest) {
@@ -54,6 +59,13 @@ public class MemberController {
     return GetMemberResponse.builder().password(commandResponse.getPassword()).name(commandResponse.getName()).email(commandResponse.getEmail()).build();
   }
 
+
+  @GetMapping("/debug-gateway")
+  public String debugGateway(
+      @RequestHeader(value = "X-From-Gateway", required = false) String fromGateway
+  ) {
+    return "X-From-Gateway header = " + fromGateway;
+  }
 
   //  @RequestMapping(path = "/recipes", method = RequestMethod.GET)
   //  public List<Recipe> getRecpes(@RequestParam(required = false, defaultValue = "1") int size,

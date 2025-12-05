@@ -7,6 +7,8 @@ import com.example.gateway.command.LogoutCommand;
 import com.example.gateway.command.model.LoginCommandRequest;
 import com.example.gateway.model.LoginRequest;
 import com.example.gateway.model.LoginResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +56,10 @@ public class LoginController {
 //  }
 
   @PostMapping("/logout")
+  @Operation(
+      summary = "Logout and blacklist the current JWT",
+      security = { @SecurityRequirement(name = "BearerAuth") }
+  )
   public void logout(@RequestHeader("Authorization") String token) {
     logoutCommand.execute(token);
   }

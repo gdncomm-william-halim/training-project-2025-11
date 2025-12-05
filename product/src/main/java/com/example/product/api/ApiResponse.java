@@ -9,7 +9,6 @@ public class ApiResponse<T> {
   private T data;
   private Instant timestamp;
 
-  // Default constructor needed by Jackson
   public ApiResponse() {
   }
 
@@ -28,7 +27,6 @@ public class ApiResponse<T> {
     return new ApiResponse<>(false, message, null);
   }
 
-  // --- getters & setters ---
 
   public boolean isSuccess() {
     return success;

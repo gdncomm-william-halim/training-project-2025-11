@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  // your custom business error (like "Recipe already exists")
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ApiResponse<Object>> handleIllegalArgument(IllegalArgumentException ex) {
     ApiResponse<Object> body = ApiResponse.error(ex.getMessage());
